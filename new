@@ -1,0 +1,11 @@
+# Creates a new folder for the exercise to be worked on.
+# Example: ./new ch1/dup1
+#!/bin/sh
+NAME=$1
+echo "hello $NAME"
+
+mkdir -p $NAME
+cd $_
+go mod init gopl.io/$NAME
+$SHELL # go to the directory
+
