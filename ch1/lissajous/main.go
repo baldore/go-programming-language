@@ -9,20 +9,25 @@ import (
 	"math"
 	"math/rand"
 	"os"
+	"time"
 )
 
-var palette = []color.Color{color.White, color.Black}
-
-const (
-	whiteIndex = 0 // first color in palette
-	blackIndex = 1 // next color in palette
-)
+var palette = []color.Color{
+	color.Black,
+	color.RGBA{0x26, 0x46, 0x53, 0xff},
+	color.RGBA{0x2A, 0x9D, 0x8F, 0xff},
+	color.RGBA{0xE9, 0xC4, 0x6A, 0xff},
+	color.RGBA{0xF4, 0xA2, 0x61, 0xff},
+	color.RGBA{0xE7, 0x6F, 0x51, 0xff},
+}
 
 func main() {
 	lissajous(os.Stdout)
 }
 
 func lissajous(out io.Writer) {
+	rand.Seed(time.Now().Unix())
+
 	const (
 		cycles  = 5     // number of complete x oscillator revolutions
 		res     = 0.001 // angular resolution
@@ -36,10 +41,11 @@ func lissajous(out io.Writer) {
 	for i := 0; i < nframes; i++ {
 		rect := image.Rect(0, 0, 2*size+1, 2*size+1)
 		img := image.NewPaletted(rect, palette)
+		colorIndex := uint8(rand.Intn(len(palette)-1)) + 1
 		for t := 0.0; t < cycles*2*math.Pi; t += res {
 			x := math.Sin(t)
 			y := math.Sin(t*freq + phase)
-			img.SetColorIndex(size+int(x*size+0.5), size+int(y*size+0.5), blackIndex)
+			img.SetColorIndex(size+int(x*size+0.5), size+int(y*size+0.5), colorIndex)
 		}
 		phase += 0.1
 		anim.Delay = append(anim.Delay, delay)
