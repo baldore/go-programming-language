@@ -59,7 +59,11 @@ func lissajous(out io.Writer, cycles int) {
 
 func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		cycles, _ := strconv.Atoi(r.URL.Query().Get("cycles"))
+		cycles, err := strconv.Atoi(r.URL.Query().Get("cycles"))
+		if err != nil {
+			cycles = 5
+		}
+
 		lissajous(w, cycles)
 	})
 	log.Fatal(http.ListenAndServe("localhost:8000", nil))
