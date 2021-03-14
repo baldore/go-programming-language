@@ -7,5 +7,6 @@ echo "hello $NAME"
 mkdir -p $NAME
 cd $_
 go mod init gopl.io/$NAME
+touch main.go
 $SHELL # go to the directory
 
